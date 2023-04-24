@@ -36,7 +36,7 @@ jobs:
     name: Purge deprecated workflow runs (Local)
     permissions:
       actions: write
-    uses: ./.github/workflows/reusable-purge-deprecated-workflow-runs.yml@master
+    uses: ./.github/workflows/reusable-purge-deprecated-workflow-runs.yml
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -46,7 +46,7 @@ jobs:
     needs:
       - set-output-defaults
       - purge-deprecated-workflow-runs
-    uses: WolfSoftware/reusable-workflows/.github/workflows/reusable-slack.yml@master
+    uses: ./.github/workflows/reusable-slack.yml
     with:
       slack_notify: ${{ needs.set-output-defaults.outputs.slack-notify }}
     secrets:
