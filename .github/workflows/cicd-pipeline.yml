@@ -1,4 +1,4 @@
-name: Repository Linting
+name: CICD Pipeline
 
 on:
   push:
