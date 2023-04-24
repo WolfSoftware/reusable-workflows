@@ -1,0 +1,33 @@
+name: YAML Linting (Reusable)
+
+on:
+  workflow_call:
+
+jobs:
+  get-python-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-language-versions.outputs.latest-versions }}
+    steps:
+    - uses: ActionsToolbox/get-language-versions-action@9a98a01e87286f073bbee069547aeeea4ea30265 # v0.1.2
+      id: get-language-versions
+      with:
+        language: "python"
+        highest-only: true
+        remove-patch-version: true
+
+  yaml-lint:
+    name: YAML Lint
+    needs: get-python-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Set up Python ${{ needs.get-python-version.outputs.version }}
+        uses: actions/setup-python@57ded4d7d5e986d7296eab16560982c6dd7c923b # v4.6.0
+        with:
+          python-version: ${{ needs.get-python-version.outputs.version }}
+      - name: Run YAML-Lint
+        env:
+          EXCLUDE_FILES: ".github/workflows"
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/yaml-lint/master/pipeline.sh)

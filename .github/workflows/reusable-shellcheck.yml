@@ -1,0 +1,14 @@
+name: ShellCheck (Reusable)
+
+on:
+  workflow_call:
+
+jobs:
+  shellcheck:
+    name: ShellCheck (Reusable)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Run Shellcheck
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/shellcheck/master/pipeline.sh)

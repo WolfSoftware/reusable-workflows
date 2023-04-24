@@ -1,0 +1,33 @@
+name: Markdown Linting (Reusable)
+
+on:
+  workflow_call:
+
+jobs:
+  get-node-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-language-versions.outputs.latest-versions }}
+    steps:
+    - uses: ActionsToolbox/get-language-versions-action@9a98a01e87286f073bbee069547aeeea4ea30265 # v0.1.2
+      id: get-language-versions
+      with:
+        language: "node"
+        highest-only: true
+        remove-patch-version: true
+
+  markdown-lint:
+    name: Markdown Lint
+    needs: get-node-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Setup node ${{ needs.get-node-version.outputs.version }}
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+        with:
+          node-version: ${{ needs.get-node-version.outputs.version }}
+      - name: Run Markdown Lint
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/markdown-lint/master/pipeline.sh)
+        env:
+          EXCLUDE_FILES: "README.md"

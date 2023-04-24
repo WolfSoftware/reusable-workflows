@@ -1,0 +1,31 @@
+name: Action Lint (Reusable)
+
+on:
+  workflow_call:
+
+jobs:
+  get-go-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-language-versions.outputs.latest-versions }}
+    steps:
+    - uses: ActionsToolbox/get-language-versions-action@9a98a01e87286f073bbee069547aeeea4ea30265 # v0.1.2
+      id: get-language-versions
+      with:
+        language: "go"
+        highest-only: true
+        remove-patch-version: true
+
+  actionlint:
+    name: Action Lint
+    needs: get-go-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Setup Go ${{ needs.get-go-version.outputs.version }}
+        uses: actions/setup-go@4d34df0c2316fe8122ab82dc22947d607c0c91f9 # v4.0.0
+        with:
+          go-version: ${{ needs.get-go-version.outputs.version }}
+      - name: Run Action Lint
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/action-lint/master/pipeline.sh)

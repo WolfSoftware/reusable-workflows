@@ -1,0 +1,24 @@
+name: Delete old workflow runs (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      older-than-seconds:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
+
+jobs:
+  delete-old-workflows:
+    name: Delete old workflow runs (Reusable)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete workflow runs
+        uses: MajorScruffy/delete-old-workflow-runs@78b5af714fefaefdf74862181c467b061782719e # v0.2.0
+        with:
+          repository: ${{ github.repository }}
+          older-than-seconds: ${{ inputs.older-than-seconds }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.token }}

@@ -1,0 +1,36 @@
+name: Awesomebot (Reusable)
+
+on:
+  workflow_call:
+
+jobs:
+  get-ruby-version:
+    name: Get Ruby Versions
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-language-versions.outputs.latest-versions }}
+    steps:
+    - uses: ActionsToolbox/get-language-versions-action@9a98a01e87286f073bbee069547aeeea4ea30265 # v0.1.2
+      id: get-language-versions
+      with:
+        language: "ruby"
+        highest-only: true
+        remove-patch-version: true
+
+  awesomebot:
+    name: Awesomebot
+    needs: get-ruby-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Set up Ruby ${{ needs.get-ruby-version.outputs.version }}
+        uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
+        with:
+          ruby-version: ${{ needs.get-ruby-version.outputs.version }}
+      - name: Run Awesomebot
+        env:
+          FLAGS: "default"
+          EXCLUDE_FILES: "CHANGELOG.md"
+          WHITELIST: "https://img.shields.io"
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/awesomebot/master/pipeline.sh)
