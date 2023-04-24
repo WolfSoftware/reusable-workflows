@@ -1,7 +1,7 @@
 <!-- markdownlint-disable -->
 <p align="center">
     <a href="https://github.com/WolfSoftware/">
-        <img src="https://cdn.wolfsoftware.com/assets/images/github/organisations/wolfsoftware/black-and-white-circle-256.png" alt="WolfSoftware logo" />
+        <img src="https://cdn.wolfsoftware.com/assets/images/general/logos/256/black-and-white-circle.png" alt="WolfSoftware logo" />
     </a>
     <br />
     <a href="https://github.com/WolfSoftware/reusable-workflows/actions/workflows/cicd-pipeline.yml">
