@@ -1,32 +1,28 @@
-name: Purge deprecated workflow runs
+name: Security Hardening
 
-on:
-  workflow_dispatch:
-
-  schedule:
-    - cron: '13 4 * * 1'
+on: push
 
 env:
-  SLACK_NOTIFY: false
+  SLACK_NOTIFY: true
 
 # Declare default permissions as read only.
 permissions: read-all
 
 jobs:
-  purge-obsolete-workflows:
-    name: Purge obsolete workflow runs
+  harden_security:
+    name: Harden Security
     runs-on: ubuntu-latest
     steps:
-      - name: Purge obsolete workflow runs
-        uses: otto-de/purge-deprecated-workflow-runs@0de33de0a9fe17321e4cf3c21dcbc0445e7c5b61 # v 1.1.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Ensure SHA pinned actions
+        uses: zgosalvez/github-actions-ensure-sha-pinned-actions@21991cec25093947ff3f62e4c223df0260c39944 # v2.1.2
 
   slack-workflow-status:
     if: always()
     name: Slack Post Workflow Notification
     needs:
-      - purge-obsolete-workflows
+      - harden_security
     runs-on: ubuntu-latest
     steps:
       - name: Slack Workflow Notifications
