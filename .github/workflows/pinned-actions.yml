@@ -1,4 +1,4 @@
-name: Security Hardening
+name: pinned-actions
 
 on: push
 
@@ -9,20 +9,15 @@ env:
 permissions: read-all
 
 jobs:
-  harden_security:
+  pinned_actions:
     name: Harden Security
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
-      - name: Ensure SHA pinned actions
-        uses: zgosalvez/github-actions-ensure-sha-pinned-actions@21991cec25093947ff3f62e4c223df0260c39944 # v2.1.2
+    uses: ./.github/workflows/reusable-pinned-actions.yml
 
   slack-workflow-status:
     if: always()
     name: Slack Post Workflow Notification
     needs:
-      - harden_security
+      - pinned_actions
     runs-on: ubuntu-latest
     steps:
       - name: Slack Workflow Notifications
