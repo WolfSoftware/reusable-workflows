@@ -8,4 +8,7 @@ permissions: read-all
 
 jobs:
   pinned_actions:
-    uses: ./.github/workflows/reusable-pinned-actions.yml
+    name: Pinned Actions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/reusable-pinned-actions.yml
