@@ -1,0 +1,48 @@
+name: Create Release Notes (Reusable)
+
+on:
+  workflow_call:
+    secrets:
+      token:
+        required: true
+
+jobs:
+  set-release-version:
+    name: Set Release Version
+    runs-on: ubuntu-latest
+    outputs:
+      release-version: ${{ steps.set-release-version.outputs.release-version }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+        with:
+          fetch-depth: 0
+      - name: set the release version
+        id: set-release-version
+        run: |
+          echo "release-version=${GITHUB_REF#refs/*/}" >> "${GITHUB_OUTPUT}"
+
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs:
+      - set-release-version
+    steps:
+      - name: Generate changelog
+        uses: Bullrich/generate-release-changelog@6b60f004b4bf12ff271603dc32dbd261965ad2f2 # v2.0.2
+        id: Changelog
+        env:
+          REPO: ${{ github.repository }}
+
+      - name: Create a release
+        id: create_release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
+        with:
+          token: ${{ secrets.token }}
+          tag_name: ${{ github.ref }}
+          name: ${{ needs.set-release-version.outputs.release-version }}
+          body: ${{ steps.Changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
