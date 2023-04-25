@@ -9,9 +9,4 @@ permissions: read-all
 jobs:
   pinned_actions:
     name: Pinned Actions
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
-      - name: Ensure SHA pinned actions
-        uses: ./.github/workflows/reusable-pinned-actions.yml
+    uses: ./.github/workflows/reusable-pinned-actions.yml
