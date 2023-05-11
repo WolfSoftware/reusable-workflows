@@ -16,6 +16,7 @@ jobs:
   slack-workflow-status:
     name: Slack (Reusable)
     runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       - name: Slack Workflow Notifications
         if: ${{ inputs.slack_notify == 'true' && github.event_name == 'push' }}

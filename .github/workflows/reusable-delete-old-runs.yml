@@ -3,9 +3,12 @@ name: Delete old workflow runs (Reusable)
 on:
   workflow_call:
     inputs:
-      older-than-seconds:
+      days:
+        type: number
         required: true
-        type: string
+      minimum-runs:
+        required: true
+        type: number
     secrets:
       token:
         required: true
@@ -16,9 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete workflow runs
-        uses: MajorScruffy/delete-old-workflow-runs@78b5af714fefaefdf74862181c467b061782719e # v0.3.0
+        uses: Mattraks/delete-workflow-runs@c1a2f0de3fa4134a2357de83c92acff6e298bb8a # v2.0.3
         with:
+          token: ${{ secrets.token }}
           repository: ${{ github.repository }}
-          older-than-seconds: ${{ inputs.older-than-seconds }}
+          retain_days: ${{ inputs.days }}
+          keep_minimum_runs: ${{ inputs.minimum-runs }}
         env:
           GITHUB_TOKEN: ${{ secrets.token }}
