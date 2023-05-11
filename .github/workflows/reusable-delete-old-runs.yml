@@ -25,5 +25,3 @@ jobs:
           repository: ${{ github.repository }}
           retain_days: ${{ inputs.days }}
           keep_minimum_runs: ${{ inputs.minimum-runs }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.token }}
