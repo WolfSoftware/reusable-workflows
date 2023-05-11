@@ -4,11 +4,11 @@ on:
   workflow_call:
     inputs:
       days:
-        type: number
+        type: string
         required: true
       minimum-runs:
         required: true
-        type: number
+        type: string
     secrets:
       token:
         required: true
