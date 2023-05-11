@@ -3,39 +3,54 @@ name: Delete old workflow runs
 on:
   workflow_dispatch:
     inputs:
-      seconds:
-        description: 'Number of seconds'
+      days:
+        description: 'Number of days.'
         required: true
-        default: 604800
-
+        default: '30'
+      minimum-runs:
+        description: 'The minimum runs to keep for each workflow.'
+        required: true
+        default: '6'
   schedule:
     - cron: '27 2 * * *'
 
 env:
   SLACK_NOTIFY: false
-
+  DAYS: 30
+  MINIMUM_RUNS: 6
+  
 # Declare default permissions as read only.
 permissions: read-all
 
 jobs:
+  set-output-defaults:
+    name: Set Output Defaults
+    runs-on: ubuntu-latest
+    outputs:
+      days: ${{ steps.set-output-defaults.outputs.days }}
+      minimum-runs: ${{ steps.set-output-defaults.outputs.minimum-runs }}
+    steps:
+      - name: set outputs with default values
+        id: set-output-defaults
+        run: |
+          echo "days=${{ github.event.inputs.days || env.DAYS }}" >> "${GITHUB_OUTPUT}"
+          echo "minimum-runs=${{ github.event.inputs.minimum-runs || env.MINIMUM_RUNS }}" >> "${GITHUB_OUTPUT}"
+    
   delete-old-workflows:
     name: Delete old workflow runs
     runs-on: ubuntu-latest
     permissions:
       actions: write
+    needs:
+        - set-output-defaults
     steps:
-      - name: Set the variables
-        env:
-          DEFAULT_SECONDS: 604800
-        run: |
-          echo "SECONDS=${{ github.event.inputs.seconds || env.DEFAULT_SECONDS }}" >> "${GITHUB_ENV}"
       - name: Delete workflow runs
-        uses: MajorScruffy/delete-old-workflow-runs@78b5af714fefaefdf74862181c467b061782719e # v0.2.0
+        uses: Mattraks/delete-workflow-runs@c1a2f0de3fa4134a2357de83c92acff6e298bb8a # v2.0.3
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          older-than-seconds: ${{ env.SECONDS }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          retain_days: ${{ needs.set-output-defaults.outputs.days }}
+          keep_minimum_runs: ${{ needs.set-output-defaults.outputs.minimum-runs }}
 
   slack-workflow-status:
     if: always()
