@@ -1,4 +1,4 @@
-name: Bandit (Reusable)
+name: Pylint (Reusable)
 
 on:
   workflow_call:
@@ -28,8 +28,8 @@ jobs:
       with:
         language: "python"
 
-  bandit:
-    name: Bandit
+  pylint:
+    name: Pylint
     needs: get-python-versions
     runs-on: ubuntu-latest
     strategy:
@@ -42,11 +42,10 @@ jobs:
         uses: actions/setup-python@57ded4d7d5e986d7296eab16560982c6dd7c923b # v4.6.0
         with:
           python-version: ${{ matrix.python-versions }}
-      - name: Run Bandit
+      - name: Run Pylint
         env:
-          EXCLUDE_FILES: ${{ inputs.exclude-files }}
-          REPORT_ONLY: ${{ inputs.report-only }}
-          SHOW_ERRORS: ${{ inputs.show-errors }}
-          SHOW_SKIPPED: ${{ inputs.show-skipped }}
-
-        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/bandit/master/pipeline.sh)
+            EXCLUDE_FILES: ${{ inputs.exclude-files }}
+            REPORT_ONLY: ${{ inputs.report-only }}
+            SHOW_ERRORS: ${{ inputs.show-errors }}
+            SHOW_SKIPPED: ${{ inputs.show-skipped }}
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/pylint/master/pipeline.sh)

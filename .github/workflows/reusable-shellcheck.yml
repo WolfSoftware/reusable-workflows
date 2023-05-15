@@ -2,6 +2,20 @@ name: ShellCheck (Reusable)
 
 on:
   workflow_call:
+    inputs:
+      exclude-files:
+        type: string
+        default: ''
+      report-only:
+        type: boolean
+        default: False
+      show-errors:
+        type: boolean
+        default: True
+      show-skipped:
+        type: boolean
+        default: False
+
 
 jobs:
   shellcheck:
@@ -12,3 +26,9 @@ jobs:
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
       - name: Run Shellcheck
         run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/shellcheck/master/pipeline.sh)
+        env:
+            EXCLUDE_FILES: ${{ inputs.exclude-files }}
+            REPORT_ONLY: ${{ inputs.report-only }}
+            SHOW_ERRORS: ${{ inputs.show-errors }}
+            SHOW_SKIPPED: ${{ inputs.show-skipped }}
+  
