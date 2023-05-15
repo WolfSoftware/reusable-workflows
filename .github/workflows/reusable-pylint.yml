@@ -15,7 +15,7 @@ on:
       show-skipped:
         type: boolean
         default: False
-    
+
 jobs:
   get-python-versions:
     name: Get Python Versions
