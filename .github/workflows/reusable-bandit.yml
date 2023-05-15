@@ -3,7 +3,7 @@ name: Bandit (Reusable)
 on:
   workflow_call:
     inputs:
-      exclude_files:
+      exclude-files:
         type: string
         default: ''
 
@@ -35,5 +35,5 @@ jobs:
           python-version: ${{ matrix.python-versions }}
       - name: Run Bandit
         env:
-          EXCLUDE_FILES: ${{ inputs.minimum-runs }}
+          EXCLUDE_FILES: ${{ inputs.exclude-files }}
         run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/bandit/master/pipeline.sh)
