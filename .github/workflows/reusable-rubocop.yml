@@ -1,4 +1,4 @@
-name: Rubocop (Reusable)
+name: Reusable Rubocop
 
 on:
   workflow_call:

@@ -1,4 +1,4 @@
-name: Awesomebot (Reusable)
+name: Reusable Awesomebot
 
 on:
   workflow_call:

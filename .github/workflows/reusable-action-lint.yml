@@ -1,4 +1,4 @@
-name: Action Lint (Reusable)
+name: Reusable Action Lint
 
 on:
   workflow_call:

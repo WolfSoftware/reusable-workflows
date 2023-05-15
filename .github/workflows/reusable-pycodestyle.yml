@@ -1,19 +1,23 @@
-name: Pycodestyle (Reusable)
+name: Reusable Pycodestyle
 
 on:
   workflow_call:
     inputs:
       exclude-files:
         type: string
+        required: false
         default: ''
       report-only:
         type: boolean
+        required: false
         default: False
       show-errors:
         type: boolean
+        required: false
         default: True
       show-skipped:
         type: boolean
+        required: false
         default: False
 
 jobs:

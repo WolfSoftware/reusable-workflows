@@ -1,4 +1,4 @@
-name: Bandit (Reusable)
+name: Reusable Bandit
 
 on:
   workflow_call:

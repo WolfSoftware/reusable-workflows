@@ -1,4 +1,4 @@
-name: Reek (Reusable)
+name: Rusable Reek
 
 on:
   workflow_call:

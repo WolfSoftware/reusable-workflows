@@ -1,4 +1,4 @@
-name: ShellCheck (Reusable)
+name: Reusable ShellCheck
 
 on:
   workflow_call:

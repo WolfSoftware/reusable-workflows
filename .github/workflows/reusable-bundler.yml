@@ -1,4 +1,4 @@
-name: Pylint (Reusable)
+name: Reusable Bundler
 
 on:
   workflow_call:

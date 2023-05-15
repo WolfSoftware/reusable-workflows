@@ -1,4 +1,4 @@
-name: Delete old workflow runs (Reusable)
+name: Reusable Delete old workflow runs
 
 on:
   workflow_call:

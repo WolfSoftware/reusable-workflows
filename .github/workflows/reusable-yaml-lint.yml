@@ -1,4 +1,4 @@
-name: YAML Linting (Reusable)
+name: Reusable YAML Linting
 
 on:
   workflow_call:

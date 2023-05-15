@@ -1,4 +1,4 @@
-name: Perl Lint (Reusable)
+name: Reusable Perl Lint
 
 on:
   workflow_call:

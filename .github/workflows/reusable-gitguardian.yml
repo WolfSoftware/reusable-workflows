@@ -1,4 +1,4 @@
-name: GitGuardian Scan (Reusable)
+name: Reusable GitGuardian Scan
 
 on:
   workflow_call:

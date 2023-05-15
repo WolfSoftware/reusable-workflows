@@ -1,4 +1,4 @@
-name: Purge deprecated workflow runs (Reusable)
+name: Resuable Purge deprecated workflow runs
 
 on:
   workflow_call:

@@ -1,4 +1,4 @@
-name: Stale Issue/PR Handler (Reusable)
+name: Reusable Stale Issue/PR Handler
 
 on:
   workflow_call:

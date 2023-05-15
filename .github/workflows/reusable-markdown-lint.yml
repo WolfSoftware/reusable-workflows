@@ -1,4 +1,4 @@
-name: Markdown Linting (Reusable)
+name: Reusable Markdown Linting
 
 on:
   workflow_call:

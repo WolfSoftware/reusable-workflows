@@ -1,4 +1,4 @@
-name: Slack (Reusable)
+name: Reusable Slack
 
 on:
   workflow_call:

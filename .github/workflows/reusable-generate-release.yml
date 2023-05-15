@@ -1,4 +1,4 @@
-name: Create Release Notes (Reusable)
+name: Reusable Create Release Notes
 
 on:
   workflow_call:
