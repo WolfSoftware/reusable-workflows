@@ -5,16 +5,20 @@ on:
     inputs:
       exclude-files:
         type: string
+        required: false
         default: ''
       report-only:
-        type: boolean
-        default: False
+        type: string
+        required: false
+        default: 'False'
       show-errors:
-        type: boolean
-        default: True
+        type: string
+        required: false
+        default: 'True'
       show-skipped:
-        type: boolean
-        default: False
+        type: string
+        required: false
+        default: 'False'
 
 jobs:
   get-ruby-versions:

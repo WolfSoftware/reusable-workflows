@@ -7,8 +7,8 @@ on:
         type: string
         required: true
       minimum-runs:
-        required: true
         type: string
+        required: false
     secrets:
       token:
         required: true
