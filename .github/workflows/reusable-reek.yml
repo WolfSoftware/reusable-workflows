@@ -8,17 +8,17 @@ on:
         required: false
         default: ''
       report-only:
-        type: string
+        type: boolean
         required: false
-        default: 'False'
+        default: False
       show-errors:
-        type: string
+        type: boolean
         required: false
-        default: 'True'
+        default: True
       show-skipped:
-        type: string
+        type: boolean
         required: false
-        default: 'False'
+        default: False
 
 jobs:
   get-ruby-versions:
