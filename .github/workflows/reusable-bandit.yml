@@ -1,20 +1,39 @@
-name: Bandit
+name: Bandit (Reusable)
 
 on:
   workflow_call:
+    inputs:
+      exclude_files:
+        type: string
+        default: ''
 
 jobs:
+  get-python-versions:
+    name: Get Python Versions
+    runs-on: ubuntu-latest
+    outputs:
+      version-matrix: ${{ steps.get-language-versions.outputs.latest-versions }}
+    steps:
+    - uses: ActionsToolbox/get-language-versions-action@12914a844dfb5bfa53884aaa1f736f961325f113 # v0.1.0
+      id: get-language-versions
+      with:
+        language: "python"
+
   bandit:
     name: Bandit
+    needs: get-python-versions
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-versions: ${{ fromJson(needs.get-python-versions.outputs.version-matrix) }}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
-      - name: Set up Python 3.11
+      - name: Set up Python ${{ matrix.python-versions }}
         uses: actions/setup-python@57ded4d7d5e986d7296eab16560982c6dd7c923b # v4.6.0
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-versions }}
       - name: Run Bandit
         env:
-          EXCLUDE_FILES: '\.md$'
+          EXCLUDE_FILES: ${{ inputs.minimum-runs }}
         run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/bandit/master/pipeline.sh)
