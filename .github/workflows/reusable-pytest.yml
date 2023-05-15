@@ -1,0 +1,40 @@
+name: Pytest (Reusable)
+
+on:
+  workflow_call:
+
+jobs:
+  get-python-versions:
+    name: Get Python Versions
+    runs-on: ubuntu-latest
+    outputs:
+      version-matrix: ${{ steps.get-language-versions.outputs.latest-versions }}
+    steps:
+    - uses: ActionsToolbox/get-language-versions-action@12914a844dfb5bfa53884aaa1f736f961325f113 # v0.1.0
+      id: get-language-versions
+      with:
+        language: "python"
+
+  pytest:
+    name: Pytest
+    needs: get-python-versions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-versions: ${{ fromJson(needs.get-python-versions.outputs.version-matrix) }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Set up Python ${{ matrix.python-versions }}
+        uses: actions/setup-python@57ded4d7d5e986d7296eab16560982c6dd7c923b # v4.6.0
+        with:
+          python-version: ${{ matrix.python-versions }}
+      - name: Install required packages
+        run: |
+          if [[ -f requirements.txt ]]; then
+              pip install -r requirements.txt
+          fi
+      - name: Run Pytest
+        run: |
+         pytest --no-header -vv
+  
