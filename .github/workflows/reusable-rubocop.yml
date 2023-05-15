@@ -1,0 +1,51 @@
+name: Rubocop (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      exclude-files:
+        type: string
+        default: ''
+      report-only:
+        type: boolean
+        default: False
+      show-errors:
+        type: boolean
+        default: True
+      show-skipped:
+        type: boolean
+        default: False
+
+jobs:
+  get-ruby-versions:
+    name: Get Ruby Versions
+    runs-on: ubuntu-latest
+    outputs:
+      version-matrix: ${{ steps.get-language-versions.outputs.latest-versions }}
+    steps:
+    - uses: ActionsToolbox/get-language-versions-action@9a98a01e87286f073bbee069547aeeea4ea30265 # v0.1.2
+      id: get-language-versions
+      with:
+        language: "ruby"
+
+  rubocop:
+    name: Rubocop
+    needs: get-ruby-versions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-versions: ${{ fromJson(needs.get-ruby-versions.outputs.version-matrix) }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Set up Ruby ${{ matrix.ruby-versions }}
+        uses: ruby/setup-ruby@6cecb48364174b0952995175c55f9bf5527e6682 # v1.147.0
+        with:
+          ruby-version: ${{ matrix.ruby-versions }}
+      - name: Run Rubocop
+        env:
+          EXCLUDE_FILES: ${{ inputs.exclude-files }}
+          REPORT_ONLY: ${{ inputs.report-only }}
+          SHOW_ERRORS: ${{ inputs.show-errors }}
+          SHOW_SKIPPED: ${{ inputs.show-skipped }}
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/rubocop/master/pipeline.sh)
