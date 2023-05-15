@@ -1,0 +1,51 @@
+name: Perl Lint (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      exclude-files:
+        type: string
+        default: ''
+      report-only:
+        type: boolean
+        default: False
+      show-errors:
+        type: boolean
+        default: True
+      show-skipped:
+        type: boolean
+        default: False
+
+jobs:
+  get-perl-versions:
+    name: Get Perl Versions
+    runs-on: ubuntu-latest
+    outputs:
+      version-matrix: ${{ steps.get-language-versions.outputs.latest-versions }}
+    steps:
+    - uses: ActionsToolbox/get-language-versions-action@12914a844dfb5bfa53884aaa1f736f961325f113 # v0.1.0
+      id: get-language-versions
+      with:
+        language: "perl"
+
+  perl-lint:
+    name: Perl Lint
+    needs: get-perl-versions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        perl-versions: ${{ fromJson(needs.get-perl-versions.outputs.version-matrix) }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Set up Perl ${{ matrix.perl-versions }}
+        uses: shogo82148/actions-setup-perl@795ea77474d1f81da5b0a04028a5b94d4118a9c2 # v1.20.2
+        with:
+          perl-version: ${{ matrix.perl-versions }}
+      - name: Run Perl Lint
+        env:
+          EXCLUDE_FILES: ${{ inputs.exclude-files }}
+          REPORT_ONLY: ${{ inputs.report-only }}
+          SHOW_ERRORS: ${{ inputs.show-errors }}
+          SHOW_SKIPPED: ${{ inputs.show-skipped }}
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/perl-lint/master/pipeline.sh)
