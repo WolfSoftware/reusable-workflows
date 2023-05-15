@@ -1,0 +1,51 @@
+name: Pydocstyle (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      exclude-files:
+        type: string
+        default: ''
+      report-only:
+        type: boolean
+        default: False
+      show-errors:
+        type: boolean
+        default: True
+      show-skipped:
+        type: boolean
+        default: False
+
+jobs:
+  get-python-versions:
+    name: Get Python Versions
+    runs-on: ubuntu-latest
+    outputs:
+      version-matrix: ${{ steps.get-language-versions.outputs.latest-versions }}
+    steps:
+    - uses: ActionsToolbox/get-language-versions-action@12914a844dfb5bfa53884aaa1f736f961325f113 # v0.1.0
+      id: get-language-versions
+      with:
+        language: "python"
+
+  pydocstyle:
+    name: Pydocstyle
+    needs: get-python-versions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-versions: ${{ fromJson(needs.get-python-versions.outputs.version-matrix) }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Set up Python ${{ matrix.python-versions }}
+        uses: actions/setup-python@57ded4d7d5e986d7296eab16560982c6dd7c923b # v4.6.0
+        with:
+          python-version: ${{ matrix.python-versions }}
+      - name: Run Pydocstyle
+        env:
+            EXCLUDE_FILES: ${{ inputs.exclude-files }}
+            REPORT_ONLY: ${{ inputs.report-only }}
+            SHOW_ERRORS: ${{ inputs.show-errors }}
+            SHOW_SKIPPED: ${{ inputs.show-skipped }}
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/pydocstyle/master/pipeline.sh)
