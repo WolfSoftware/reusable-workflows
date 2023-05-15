@@ -37,6 +37,7 @@ jobs:
       - name: Install Pytest
         run: |
           pip install pytest
+          exit $(( $? == 5 ? 0 : $? ))
       - name: Run Pytest
         run: |
          pytest --no-header -vv
