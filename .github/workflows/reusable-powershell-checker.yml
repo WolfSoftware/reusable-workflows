@@ -1,0 +1,15 @@
+name: Reusable Powershell Linter
+
+on:
+  workflow_call:
+
+jobs:
+  shellcheck:
+    name: ShellCheck (Reusable)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: lint
+        uses: SleepySysadmin/github-action-pscheck@2522a32675c0c3447a479b401ef5f14d33f8f7a2 # v0.4.2
+
