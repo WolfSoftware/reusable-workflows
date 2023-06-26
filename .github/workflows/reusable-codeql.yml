@@ -15,7 +15,7 @@ jobs:
     steps:
       - id: setVariables
         run: |
-          echo "{matrix}={$input}" >> "${GITHUB_OUTPUT}"
+          echo "matrix={$input}" >> "${GITHUB_OUTPUT}"
         env:
           input: ${{ inputs.languages }}
 
