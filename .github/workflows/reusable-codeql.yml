@@ -8,18 +8,8 @@ on:
         type: string
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.setVariables.outputs.matrix }}
-    steps:
-      - id: setVariables
-        run: |
-          echo "matrix=${{inputs.languages}}" >> "${GITHUB_OUTPUT}"
-
   analyze:
     name: Analyze
-    needs: setup
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -29,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ${{fromJson(needs.setup.outputs.matrix)}}
+        language: ${{ fromJson(inputs.languages) }}
 
     steps:
     - name: Checkout the repository
