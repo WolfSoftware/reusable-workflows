@@ -39,7 +39,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
       - name: Set up Perl ${{ matrix.perl-versions }}
-        uses: shogo82148/actions-setup-perl@7f907be1fad5b3080fce625f3eab81475ccaecd2 # v1.23.0
+        uses: shogo82148/actions-setup-perl@35426a57f184a35daee329bb17ae49332ff8a422 # v1.23.1
         with:
           perl-version: ${{ matrix.perl-versions }}
       - name: Run Perl Lint
