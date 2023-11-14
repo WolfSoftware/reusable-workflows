@@ -39,7 +39,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
       - name: Set up Ruby ${{ matrix.ruby-versions }}
-        uses: ruby/setup-ruby@036ef458ddccddb148a2b9fb67e95a22fdbf728b # v1.147.0
+        uses: ruby/setup-ruby@8575951200e472d5f2d95c625da0c7bec8217c42 # v1.147.0
         with:
           ruby-version: ${{ matrix.ruby-versions }}
       - name: Run Rubocop
