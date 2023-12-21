@@ -24,7 +24,7 @@ jobs:
         ruby-versions: ${{ fromJson(needs.get-ruby-versions.outputs.version-matrix) }}
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set up Ruby ${{ matrix.ruby-versions }}
         uses: ruby/setup-ruby@af848b40be8bb463a751551a1180d74782ba8a72 # v1.162.0
         with:
